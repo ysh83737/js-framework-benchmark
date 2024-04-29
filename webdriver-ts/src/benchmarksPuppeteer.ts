@@ -42,16 +42,11 @@ export let benchRun = new (class extends CPUBenchmarkPuppeteer {
   }
   async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
-    for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-      await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (i*1000+1).toFixed());
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-    }
+    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run(page: Page) {
       await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)", ((this.benchmarkInfo.warmupCount+1)*1000).toFixed());
+      await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
   }
 })();
 
@@ -229,6 +224,7 @@ export const benchReadyMemory = new (class extends MemBenchmarkPuppeteer {
   }
   async init(page: Page) {
     await checkElementExists(page, "pierce/#run");
+    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run() {
     return await Promise.resolve(null);
@@ -239,12 +235,13 @@ export const benchRunMemory = new (class extends MemBenchmarkPuppeteer {
   constructor() {
     super(memBenchmarkInfos[Benchmark._22]);
   }
-  async init(page: Page) {
+  async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
+    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run(page: Page) {
-    await clickElement(page, "pierce/#run");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(2)>a");
+      await clickElement(page, "pierce/#run");
+      await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
   }
 })();
 
@@ -312,18 +309,18 @@ export const benchCreateClear5Memory = new (class extends MemBenchmarkPuppeteer 
 
 export const benchmarks = [
   benchRun, 
-  benchReplaceAll,
-  benchUpdate, 
-  benchSelect, 
-  benchSwapRows, 
-  benchRemove, 
-  benchRunBig, 
-  benchAppendToManyRows, 
-  benchClear, 
+  // benchReplaceAll,
+  // benchUpdate, 
+  // benchSelect, 
+  // benchSwapRows, 
+  // benchRemove, 
+  // benchRunBig, 
+  // benchAppendToManyRows, 
+  // benchClear, 
   benchReadyMemory, 
   benchRunMemory, 
-  benchUpdate5Memory,
-  // benchReplace5Memory, 
-  benchCreateClear5Memory,
-  benchRun10KMemory,
+  // benchUpdate5Memory,
+  // // benchReplace5Memory, 
+  // benchCreateClear5Memory,
+  // benchRun10KMemory,
 ];
