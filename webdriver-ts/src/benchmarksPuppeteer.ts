@@ -46,7 +46,11 @@ export let benchRun = new (class extends CPUBenchmarkPuppeteer {
   }
   async run(page: Page) {
       await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      await checkCountForSelector(page, "pierce/.el-table", 2).then(() => {
+        return checkElementContainsText(page, "pierce/.el-table:last-child .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      })
   }
 })();
 
@@ -241,7 +245,11 @@ export const benchRunMemory = new (class extends MemBenchmarkPuppeteer {
   }
   async run(page: Page) {
       await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      await checkCountForSelector(page, "pierce/.el-table", 2).then(() => {
+        return checkElementContainsText(page, "pierce/.el-table:last-child .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      })
   }
 })();
 
