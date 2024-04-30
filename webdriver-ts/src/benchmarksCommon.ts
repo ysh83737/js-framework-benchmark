@@ -279,8 +279,8 @@ export const memBenchmarkInfosArray: Array<MemBenchmarkInfo> = [
   },
   {
     id: Benchmark._252,
-    label: "5 Tab + 10 Size，Tab2",
-    description: "5个Tab、10条分页，展示Tab2的内存占用",
+    label: "5 Tab + 10 Size，Tab5",
+    description: "5个Tab、10条分页，展示Tab5的内存占用",
     type: BenchmarkType.MEM,
   },
   {
@@ -291,8 +291,8 @@ export const memBenchmarkInfosArray: Array<MemBenchmarkInfo> = [
   },
   {
     id: Benchmark._262,
-    label: "5 Tab + 50 Size，Tab2",
-    description: "5个Tab、50条分页，展示Tab2的内存占用",
+    label: "5 Tab + 50 Size，Tab5",
+    description: "5个Tab、50条分页，展示Tab5的内存占用",
     type: BenchmarkType.MEM,
   },
   {
@@ -303,8 +303,8 @@ export const memBenchmarkInfosArray: Array<MemBenchmarkInfo> = [
   },
   {
     id: Benchmark._272,
-    label: "5 Tab + 1000 Size，Tab2",
-    description: "5个Tab、1000条分页，展示Tab2的内存占用",
+    label: "5 Tab + 1000 Size，Tab5",
+    description: "5个Tab、1000条分页，展示Tab5的内存占用",
     type: BenchmarkType.MEM,
   },
 ];
