@@ -206,7 +206,11 @@ const bench222 = new (class extends MemBenchmarkPuppeteer {
     await clickElement(page, "pierce/#init");
     await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
     await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
+    await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
+    }).catch(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
+    })
   }
   async run() {
     return await Promise.resolve(null);
@@ -239,7 +243,11 @@ const bench232 = new (class extends MemBenchmarkPuppeteer {
     await clickElement(page, "pierce/#init");
     await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
     await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+    await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+    }).catch(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+    })
   }
   async run() {
     return await Promise.resolve(null);
@@ -272,7 +280,11 @@ const bench242 = new (class extends MemBenchmarkPuppeteer {
     await clickElement(page, "pierce/#init");
     await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
     await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+    await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+    }).catch(() => {
+      return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+    })
   }
   async run() {
     return await Promise.resolve(null);
