@@ -14,7 +14,7 @@ export async function checkElementNotExists(page: Page, selector: string) {
     await page.waitForTimeout(k < 3 ? 10 : 1000);
   }
   console.log("checkElementNotExists waited " + (Date.now() - start) + " but no luck");
-  throw `checkElementNotExists failed for ${selector};`;
+  throw `\x1b[97m\x1b[41mcheckElementNotExists failed for ${selector};\x1b[0m`;
 }
 
 export async function checkElementExists(page: Page, selector: string) {
@@ -29,12 +29,12 @@ export async function checkElementExists(page: Page, selector: string) {
     await page.waitForTimeout(k < 3 ? 10 : 1000);
   }
   console.log("checkElementExists waited " + (Date.now() - start) + " but no luck");
-  throw `checkElementExists failed for ${selector};`;
+  throw `\x1b[97m\x1b[41mcheckElementExists failed for ${selector};\x1b[0m`;
 }
 
 export async function clickElement(page: Page, selector: string) {
   let elem = await page.$(selector);
-  if (!elem.asElement()) throw `clickElementByXPath ${selector} failed. Element was not found.`;
+  if (!elem.asElement()) throw `\x1b[97m\x1b[41mclickElementByXPath ${selector} failed. Element was not found.\x1b[0m`;
   await elem.click();
   await elem.dispose();
 }
@@ -56,7 +56,7 @@ export async function checkElementContainsText(page: Page, selector: string, exp
     await page.waitForTimeout(k < 3 ? 10 : 1000);
   }
   console.log("checkElementExists waited " + (Date.now() - start) + " but no luck");
-  throw `checkElementContainsText ${selector} failed. expected ${expectedText}, but was ${txt}`;
+  throw `\x1b[97m\x1b[41mcheckElementContainsText ${selector} failed. expected ${expectedText}, but was ${txt}\x1b[0m`;
 }
 
 export async function checkElementHasClass(page: Page, selector: string, className: string): Promise<void> {
@@ -74,18 +74,18 @@ export async function checkElementHasClass(page: Page, selector: string, classNa
     }
     await page.waitForTimeout(k < 3 ? 10 : 1000);
   }
-  throw `checkElementHasClass ${selector} failed. expected ${className}, but was ${clazzes}`;
+  throw `\x1b[97m\x1b[41mcheckElementHasClass ${selector} failed. expected ${className}, but was ${clazzes}\x1b[0m`;
 }
 
 export async function checkCountForSelector(page: Page, selector: string, expectedCount: number): Promise<void> {
   let elems = await page.$$(selector);
   if (elems) {
     if (expectedCount !== elems.length) {
-      throw `checkCountForSelector ${selector} failed. expected ${expectedCount}, but ${elems.length} were found`;
+      throw `\x1b[97m\x1b[41mcheckCountForSelector ${selector} failed. expected ${expectedCount}, but ${elems.length} were found\x1b[0m`;
     }
   } else {
     if (expectedCount !== 0) {
-      throw `checkCountForSelector ${selector} failed. expected ${expectedCount}, but selector was not found`;
+      throw `\x1b[97m\x1b[41mcheckCountForSelector ${selector} failed. expected ${expectedCount}, but selector was not found\x1b[0m`;
     }
   }
 }
