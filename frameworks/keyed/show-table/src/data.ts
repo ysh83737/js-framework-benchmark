@@ -73,25 +73,7 @@ export function buildData(count = 1000) {
     })
   return data
 }
-
-export const MOCK_COUNT = 2
-export const MOCK_PAGE_SIZE = 1000
-
 export interface Item {
   id: number;
   label: string
-}
-export const datas = Array(MOCK_COUNT).fill(1).map(() => buildData(MOCK_PAGE_SIZE))
-
-export function changeIndex(cb: () => number) {
-  return new Promise((r) => {
-    setTimeout(() => {
-      const index = cb()
-      console.log('推送第', index + 1, '组数据')
-      if (index + 1 < MOCK_COUNT) {
-        r(changeIndex(cb))
-      }
-      r(null)
-    }, 1000);
-  })
 }
