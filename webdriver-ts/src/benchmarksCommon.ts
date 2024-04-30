@@ -70,21 +70,33 @@ export function fileName(framework: FrameworkData, benchmark: BenchmarkInfo) {
 }
 
 export enum Benchmark {
-  _01 = "01_run1k", // YSH
-  _02 = "02_replace1k",
-  _03 = "03_update10th1k_x16",
-  _04 = "04_select1k",
-  _05 = "05_swap1k",
-  _06 = "06_remove-one-1k",
+  _01 = "01_2tab_10size", // YSH
+  _02 = "02_2tab_50size", // YSH
+  _03 = "03_2tab_1000size", // YSH
+  _04 = "04_5tab_10size", // YSH
+  _05 = "05_5tab_50size", // YSH
+  _06 = "06_5tab_1000size", // YSH
   _07 = "07_create10k",
   _08 = "08_create1k-after1k_x2",
   _09 = "09_clear1k_x8",
-  _21 = "21_ready-memory", // YSH
+  _21 = "21_ready_memory", // YSH
   _22 = "22_run-memory", // YSH
   _23 = "23_update5-memory",
   // _24 = "24_run5-memory",
   _25 = "25_run-clear-memory",
   _26 = "26_run-10k-memory",
+  _221 = "221_2tab_10size_tab1_memory", // YSH
+  _222 = "222_2tab_10size_tab2_memory", // YSH
+  _231 = "231_2tab_50size_tab1_memory", // YSH
+  _232 = "232_2tab_50size_tab2_memory", // YSH
+  _241 = "241_2tab_1000size_tab1_memory", // YSH
+  _242 = "242_2tab_1000size_tab2_memory", // YSH
+  _251 = "251_5tab_10size_tab1_memory", // YSH
+  _252 = "252_5tab_10size_tab5_memory", // YSH
+  _261 = "261_5tab_50size_tab1_memory", // YSH
+  _262 = "262_5tab_50size_tab5_memory", // YSH
+  _271 = "271_5tab_1000size_tab1_memory", // YSH
+  _272 = "272_5tab_1000size_tab5_memory", // YSH
   _30 = "30_startup",
   _40 = "40_sizes",
 }
@@ -126,64 +138,64 @@ export function slowDownFactor(benchmarkId: string, allowThrottling: boolean): n
 export const cpuBenchmarkInfosArray: Array<CPUBenchmarkInfo> = [
   {
     id: Benchmark._01,
-    label: "切换1000条数据",
+    label: "2 Tab + 10 Size",
     warmupCount: 0,
-    description: "从1-1000切换至1001-2000的数据",
+    description: "2个Tab、10条分页，从Tab1切换到Tab2",
     type: BenchmarkType.CPU,
     allowBatching: true,
     layoutEventRequired: true,
     additionalNumberOfRuns: 0,
   },
-  // {
-  //   id: Benchmark._02,
-  //   label: "replace all rows",
-  //   warmupCount: 5,
-  //   description: "updating all 1,000 rows.",
-  //   type: BenchmarkType.CPU,
-  //   allowBatching: true,
-  //   layoutEventRequired: true,
-  //   additionalNumberOfRuns: 0,
-  // },
-  // {
-  //   id: Benchmark._03,
-  //   label: "partial update",
-  //   warmupCount: 3,
-  //   description: "updating every 10th row for 1,000 row.",
-  //   type: BenchmarkType.CPU,
-  //   allowBatching: true,
-  //   layoutEventRequired: true,
-  //   additionalNumberOfRuns: 0,
-  // },
-  // {
-  //   id: Benchmark._04,
-  //   label: "select row",
-  //   warmupCount: 5,
-  //   description: "highlighting a selected row.",
-  //   type: BenchmarkType.CPU,
-  //   allowBatching: true,
-  //   layoutEventRequired: false,
-  //   additionalNumberOfRuns: 10,
-  // },
-  // {
-  //   id: Benchmark._05,
-  //   label: "swap rows",
-  //   warmupCount: 5,
-  //   description: "swap 2 rows for table with 1,000 rows.",
-  //   type: BenchmarkType.CPU,
-  //   allowBatching: true,
-  //   layoutEventRequired: true,
-  //   additionalNumberOfRuns: 0,
-  // },
-  // {
-  //   id: Benchmark._06,
-  //   label: "remove row",
-  //   warmupCount: 5,
-  //   description: "removing one row.",
-  //   type: BenchmarkType.CPU,
-  //   allowBatching: true,
-  //   layoutEventRequired: true,
-  //   additionalNumberOfRuns: 0,
-  // },
+  {
+    id: Benchmark._02,
+    label: "2 Tab + 50 Size",
+    warmupCount: 0,
+    description: "2个Tab、50条分页，从Tab1切换到Tab2",
+    type: BenchmarkType.CPU,
+    allowBatching: true,
+    layoutEventRequired: true,
+    additionalNumberOfRuns: 0,
+  },
+  {
+    id: Benchmark._03,
+    label: "2 Tab + 1000 Size",
+    warmupCount: 0,
+    description: "2个Tab、1000条分页，从Tab1切换到Tab2",
+    type: BenchmarkType.CPU,
+    allowBatching: true,
+    layoutEventRequired: true,
+    additionalNumberOfRuns: 0,
+  },
+  {
+    id: Benchmark._04,
+    label: "5 Tab + 10 Size",
+    warmupCount: 0,
+    description: "5个Tab、10条分页，从Tab1切换到Tab5",
+    type: BenchmarkType.CPU,
+    allowBatching: true,
+    layoutEventRequired: true,
+    additionalNumberOfRuns: 0,
+  },
+  {
+    id: Benchmark._05,
+    label: "5 Tab + 50 Size",
+    warmupCount: 0,
+    description: "5个Tab、50条分页，从Tab1切换到Tab5",
+    type: BenchmarkType.CPU,
+    allowBatching: true,
+    layoutEventRequired: true,
+    additionalNumberOfRuns: 0,
+  },
+  {
+    id: Benchmark._06,
+    label: "5 Tab + 1000 Size",
+    warmupCount: 0,
+    description: "5个Tab、1000条分页，从Tab1切换到Tab5",
+    type: BenchmarkType.CPU,
+    allowBatching: true,
+    layoutEventRequired: true,
+    additionalNumberOfRuns: 0,
+  },
   // {
   //   id: Benchmark._07,
   //   label: "create many rows",
@@ -224,35 +236,77 @@ export const memBenchmarkInfosArray: Array<MemBenchmarkInfo> = [
     type: BenchmarkType.MEM,
   },
   {
-    id: Benchmark._22,
-    label: "运行后内存",
-    description: "切换1000条数据后的内存占用",
+    id: Benchmark._221,
+    label: "2 Tab + 10 Size，Tab1",
+    description: "2个Tab、10条分页，展示Tab1的内存占用",
     type: BenchmarkType.MEM,
   },
-  // {
-  //   id: Benchmark._23,
-  //   label: "update every 10th row for 1k rows (5 cycles)",
-  //   description: "Memory usage after clicking update every 10th row 5 times",
-  //   type: BenchmarkType.MEM,
-  // },
-  // // {
-  // //   id: Benchmark._24,
-  // //   label: "replace 1k rows (5 cycles)",
-  // //   description: "Memory usage after clicking create 1000 rows 5 times",
-  // //   type: BenchmarkType.MEM,
-  // // },
-  // {
-  //   id: Benchmark._25,
-  //   label: "creating/clearing 1k rows (5 cycles)",
-  //   description: "Memory usage after creating and clearing 1000 rows 5 times",
-  //   type: BenchmarkType.MEM,
-  // },
-  // {
-  //   id: Benchmark._26,
-  //   label: "run memory 10k",
-  //   description: "Memory usage after adding 10,000 rows.",
-  //   type: BenchmarkType.MEM,
-  // },
+  {
+    id: Benchmark._222,
+    label: "2 Tab + 10 Size，Tab2",
+    description: "2个Tab、10条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._231,
+    label: "2 Tab + 50 Size，Tab1",
+    description: "2个Tab、50条分页，展示Tab1的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._232,
+    label: "2 Tab + 50 Size，Tab2",
+    description: "2个Tab、50条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._241,
+    label: "2 Tab + 1000 Size，Tab1",
+    description: "2个Tab、1000条分页，展示Tab1的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._242,
+    label: "2 Tab + 1000 Size，Tab2",
+    description: "2个Tab、1000条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._251,
+    label: "5 Tab + 10 Size，Tab1",
+    description: "5个Tab、10条分页，展示Tab1的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._252,
+    label: "5 Tab + 10 Size，Tab2",
+    description: "5个Tab、10条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._261,
+    label: "5 Tab + 50 Size，Tab1",
+    description: "5个Tab、50条分页，展示Tab1的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._262,
+    label: "5 Tab + 50 Size，Tab2",
+    description: "5个Tab、50条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._271,
+    label: "5 Tab + 1000 Size，Tab1",
+    description: "5个Tab、1000条分页，展示Tab1的内存占用",
+    type: BenchmarkType.MEM,
+  },
+  {
+    id: Benchmark._272,
+    label: "5 Tab + 1000 Size，Tab2",
+    description: "5个Tab、1000条分页，展示Tab2的内存占用",
+    type: BenchmarkType.MEM,
+  },
 ];
 
 export const startupBenchmarkInfosArray: Array<StartupMainBenchmarkInfo> = [

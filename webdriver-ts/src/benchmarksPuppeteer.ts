@@ -36,299 +36,381 @@ export abstract class MemBenchmarkPuppeteer implements BenchmarkImpl {
 
 export type BenchmarkPuppeteer = CPUBenchmarkPuppeteer | MemBenchmarkPuppeteer;
 
-export let benchRun = new (class extends CPUBenchmarkPuppeteer {
+const bench01 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._01]);
   }
   async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
   }
   async run(page: Page) {
       await clickElement(page, "pierce/#run");
-      await checkCountForSelector(page, "pierce/.el-table", 2).then(() => {
-        return checkElementContainsText(page, "pierce/.el-table:last-child .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
       }).catch(() => {
-        return checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
       })
   }
 })();
 
-export const benchReplaceAll = new (class extends CPUBenchmarkPuppeteer {
+const bench02 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._02]);
   }
-  async init(page: Page) {
-      await checkElementExists(page, "pierce/#run");
-      for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-        await clickElement(page, "pierce/#run");
-        await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (i*1000+1).toFixed());
-      }
+  async init(page: Page) { 
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
   }
   async run(page: Page) {
-    await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", `${this.benchmarkInfo.warmupCount * 1000 + 1}`);
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+      })
   }
 })();
 
-export const benchUpdate = new (class extends CPUBenchmarkPuppeteer {
+export const bench03 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._03]);
   }
-  async init(page: Page) {
+  async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
-    await clickElement(page, "pierce/#run");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-      for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-        await clickElement(page, "pierce/#update");
-        await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(991)>td:nth-of-type(2)>a", ' !!!'.repeat(i + 1));
-      }
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run(page: Page) {
-    await clickElement(page, "pierce/#update");
-    await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(991)>td:nth-of-type(2)>a", ' !!!'.repeat(this.benchmarkInfo.warmupCount + 1));
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 2).then(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table:nth-child(2) .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+      })
   }
 })();
 
-export const benchSelect = new (class extends CPUBenchmarkPuppeteer {
+export const bench04 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._04]);
   }
-  async init(page: Page) {
+  async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
-    await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)", "1000");
-    for (let i = 0; i <= this.benchmarkInfo.warmupCount; i++) {
-      await clickElement(page, `pierce/tbody>tr:nth-of-type(${i + 5})>td:nth-of-type(2)>a`);
-      await checkElementHasClass(page, `pierce/tbody>tr:nth-of-type(${i + 5})`, "danger");
-      await checkCountForSelector(page, "pierce/tbody>tr.danger", 1);
-    }
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
   }
   async run(page: Page) {
-      await clickElement(page, "pierce/tbody>tr:nth-of-type(2)>td:nth-of-type(2)>a");
-      await checkElementHasClass(page, "pierce/tbody>tr:nth-of-type(2)", "danger");
+    for (let i = 2; i <= 5; i++) {
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(10) .cell`, String(i * 10));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(i * 10));
+      })
+    }
   }
 })();
 
-export const benchSwapRows = new (class extends CPUBenchmarkPuppeteer {
+export const bench05 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._05]);
   }
-  async init(page: Page) {
-      await checkElementExists(page, "pierce/#run");
-      await clickElement(page, "pierce/#run");
-      await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-      for (let i = 0; i <= this.benchmarkInfo.warmupCount; i++) {
-        let text = i % 2 == 0 ? "2" : "999";
-        await clickElement(page, "pierce/#swaprows");
-        await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(999)>td:nth-of-type(1)", text);
-      }
+  async init(page: Page) { 
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
   }
   async run(page: Page) {
-      await clickElement(page, "pierce/#swaprows");
-      let text999 = this.benchmarkInfo.warmupCount % 2 == 0 ? "999" : "2";
-      let text2 = this.benchmarkInfo.warmupCount % 2 == 0 ? "2" : "999";
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(999)>td:nth-of-type(1)", text999);
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(2)>td:nth-of-type(1)", text2);
+    for (let i = 2; i <= 5; i++) {
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(50) .cell`, String(i * 50));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(i * 50));
+      })
+    }
   }
 })();
 
-export const benchRemove = new (class extends CPUBenchmarkPuppeteer {
+export const bench06 = new (class extends CPUBenchmarkPuppeteer {
   constructor() {
     super(cpuBenchmarkInfos[Benchmark._06]);
   }
-  rowsToSkip = 4;
-  async init(page: Page) {
+  async init(page: Page) { 
     await checkElementExists(page, "pierce/#run");
-    await clickElement(page, "pierce/#run");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-      for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-        const rowToClick = this.benchmarkInfo.warmupCount - i + this.rowsToSkip;
-        await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${rowToClick})>td:nth-of-type(1)`, rowToClick.toString());
-        await clickElement(page, `pierce/tbody>tr:nth-of-type(${rowToClick})>td:nth-of-type(3)>a>span:nth-of-type(1)`);
-        await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${rowToClick})>td:nth-of-type(1)`, `${this.rowsToSkip + this.benchmarkInfo.warmupCount + 1}`);
-      }
-      await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip + 1})>td:nth-of-type(1)`, `${this.rowsToSkip + this.benchmarkInfo.warmupCount + 1}`);
-      await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip})>td:nth-of-type(1)`, `${this.rowsToSkip}`);
-
-      // Click on a row the second time
-      await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip + 2})>td:nth-of-type(1)`, `${this.rowsToSkip + this.benchmarkInfo.warmupCount + 2}`);
-      await clickElement(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip + 2})>td:nth-of-type(3)>a>span:nth-of-type(1)`);
-      await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip + 2})>td:nth-of-type(1)`, `${this.rowsToSkip + this.benchmarkInfo.warmupCount + 3}`);
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run(page: Page) {
-    await clickElement(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip})>td:nth-of-type(3)>a>span:nth-of-type(1)`);
-    await checkElementContainsText(page, `pierce/tbody>tr:nth-of-type(${this.rowsToSkip})>td:nth-of-type(1)`, `${this.rowsToSkip + this.benchmarkInfo.warmupCount + 1}`);
-  }
-})();
-export const benchRunBig = new (class extends CPUBenchmarkPuppeteer {
-  constructor() {
-    super(cpuBenchmarkInfos[Benchmark._07]);  
-  }
-  async init(page: Page) {
-    await checkElementExists(page, "pierce/#run");
-    for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
+    for (let i = 2; i <= 5; i++) {
       await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (i*1000+1).toFixed());
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-    }    
-  }
-  async run(page: Page) {
-    await clickElement(page, "pierce/#runlots");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(10000)>td:nth-of-type(2)>a");
-  }
-})();
-  
-export const benchAppendToManyRows = new (class extends CPUBenchmarkPuppeteer {
-  constructor() {
-    super(cpuBenchmarkInfos[Benchmark._08]);
-  }
-  async init(page: Page) {
-    await checkElementExists(page, "pierce/#run");
-    for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-      await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (i*1000+1).toFixed());
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-    }    
-    await clickElement(page, "pierce/#run");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
-  }
-  async run(page: Page) {
-    await clickElement(page, "pierce/#add");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(2000)>td:nth-of-type(1)");
-  }
-})();
-
-export const benchClear = new (class extends CPUBenchmarkPuppeteer {
-  constructor() {
-    super(cpuBenchmarkInfos[Benchmark._09]);
-  }
-  async init(page: Page) {
-    await checkElementExists(page, "pierce/#run");
-    for (let i = 0; i < this.benchmarkInfo.warmupCount; i++) {
-      await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (i*1000+1).toFixed());
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(1000) .cell`, String(i * 1000));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(i * 1000));
+      })
     }
-    await clickElement(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(1)", (this.benchmarkInfo.warmupCount*1000+1).toFixed());
-  }
-  async run(page: Page) {
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
   }
 })();
 
-export const benchReadyMemory = new (class extends MemBenchmarkPuppeteer {
+const bench21 = new (class extends MemBenchmarkPuppeteer {
   constructor() {
     super(memBenchmarkInfos[Benchmark._21]);
   }
   async init(page: Page) {
     await checkElementExists(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
   }
   async run() {
     return await Promise.resolve(null);
   }
 })();
 
-export const benchRunMemory = new (class extends MemBenchmarkPuppeteer {
+const bench221 = new (class extends MemBenchmarkPuppeteer {
   constructor() {
-    super(memBenchmarkInfos[Benchmark._22]);
-  }
-  async init(page: Page) { 
-    await checkElementExists(page, "pierce/#run");
-    await checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
-  }
-  async run(page: Page) {
-      await clickElement(page, "pierce/#run");
-      await checkCountForSelector(page, "pierce/.el-table", 2).then(() => {
-        return checkElementContainsText(page, "pierce/.el-table:last-child .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
-      }).catch(() => {
-        return checkElementContainsText(page, "pierce/.el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '2000');
-      })
-  }
-})();
-
-export const benchRun10KMemory = new (class extends MemBenchmarkPuppeteer {
-  constructor() {
-    super(memBenchmarkInfos[Benchmark._26]);
-  }
-  async init(page: Page) {
-    await checkElementExists(page, "pierce/#runlots");
-  }
-  async run(page: Page) {
-    await clickElement(page, "pierce/#runlots");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(10000)>td:nth-of-type(2)>a");
-  }
-})();
-
-export const benchUpdate5Memory = new (class extends MemBenchmarkPuppeteer {
-  constructor() {
-    super(memBenchmarkInfos[Benchmark._23]);
+    super(memBenchmarkInfos[Benchmark._221]);
   }
   async init(page: Page) {
     await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
   }
-  async run(page: Page) {
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench222 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._222]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
     await clickElement(page, "pierce/#run");
-    await checkElementExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(2)>a");
-    for (let i = 0; i < 5; i++) {
-      await clickElement(page, "pierce/#update");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1)>td:nth-of-type(2)>a", " !!!".repeat(i));
-    }
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(2 * 10));
+  }
+  async run() {
+    return await Promise.resolve(null);
   }
 })();
 
-// export const benchReplace5Memory = new (class extends MemBenchmarkPuppeteer {
-//   constructor() {
-//     super(memBenchmarkInfos[Benchmark._24]);
-//   }
-//   async init(page: Page) {
-//     await checkElementExists(page, "pierce/#run");
-//   }
-//   async run(page: Page) {
-//     for (let i = 0; i < 5; i++) {
-//       await clickElement(page, "pierce/#run");
-//       await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)", (1000 * (i + 1)).toFixed());
-//     }
-//   }
-// })();
-
-export const benchCreateClear5Memory = new (class extends MemBenchmarkPuppeteer {
+const bench231 = new (class extends MemBenchmarkPuppeteer {
   constructor() {
-    super(memBenchmarkInfos[Benchmark._25]);
+    super(memBenchmarkInfos[Benchmark._231]);
   }
   async init(page: Page) {
     await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
   }
-  async run(page: Page) {
-    for (let i = 0; i < 5; i++) {
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench232 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._232]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
+    await clickElement(page, "pierce/#run");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(2 * 50));
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+
+const bench241 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._241]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench242 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._242]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-2");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
+    await clickElement(page, "pierce/#run");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(2 * 1000));
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+
+const bench251 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._251]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", '10');
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench252 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._252]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-10");
+    await clickElement(page, "pierce/#init");
+    for (let i = 2; i <= 5; i++) {
       await clickElement(page, "pierce/#run");
-      await checkElementContainsText(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)", (1000 * (i + 1)).toFixed());
-      await clickElement(page, "pierce/#clear");
-      await checkElementNotExists(page, "pierce/tbody>tr:nth-of-type(1000)>td:nth-of-type(1)");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(10) .cell`, String(i * 10));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(10) .cell", String(i * 10));
+      })
     }
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+
+const bench261 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._261]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", '50');
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench262 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._262]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-50");
+    await clickElement(page, "pierce/#init");
+    for (let i = 2; i <= 5; i++) {
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(50) .cell`, String(i * 50));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(50) .cell", String(i * 50));
+      })
+    }
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+
+const bench271 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._271]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    await checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", '1000');
+  }
+  async run() {
+    return await Promise.resolve(null);
+  }
+})();
+const bench272 = new (class extends MemBenchmarkPuppeteer {
+  constructor() {
+    super(memBenchmarkInfos[Benchmark._272]);
+  }
+  async init(page: Page) {
+    await checkElementExists(page, "pierce/#run");
+    await clickElement(page, "pierce/#set-tab-count-5");
+    await clickElement(page, "pierce/#set-page-size-1000");
+    await clickElement(page, "pierce/#init");
+    for (let i = 2; i <= 5; i++) {
+      await clickElement(page, "pierce/#run");
+      await checkCountForSelector(page, "pierce/.table-container .el-table", 5).then(() => {
+        return checkElementContainsText(page, `pierce/.table-container .el-table:nth-child(${i}) .el-table__body tbody .el-table__row:nth-child(1000) .cell`, String(i * 1000));
+      }).catch(() => {
+        return checkElementContainsText(page, "pierce/.table-container .el-table .el-table__body tbody .el-table__row:nth-child(1000) .cell", String(i * 1000));
+      })
+    }
+  }
+  async run() {
+    return await Promise.resolve(null);
   }
 })();
 
 export const benchmarks = [
-  benchRun, 
-  // benchReplaceAll,
-  // benchUpdate, 
-  // benchSelect, 
-  // benchSwapRows, 
-  // benchRemove, 
-  // benchRunBig, 
-  // benchAppendToManyRows, 
-  // benchClear, 
-  benchReadyMemory, 
-  benchRunMemory, 
-  // benchUpdate5Memory,
-  // // benchReplace5Memory, 
-  // benchCreateClear5Memory,
-  // benchRun10KMemory,
+  bench01, 
+  bench02,
+  bench03, 
+  bench04, 
+  bench05, 
+  bench06, 
+  bench21,
+  bench221,
+  bench222,
+  bench231,
+  bench232,
+  bench241,
+  bench242,
+  bench251,
+  bench252,
+  bench261,
+  bench262,
+  bench271,
+  bench272,
 ];
