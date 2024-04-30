@@ -115,11 +115,11 @@ export type BenchmarkId =
   | typeof Benchmark._40;
 
 const throttlingFactors: { [idx: string]: number } = {
-  [Benchmark._03]: 4,
-  [Benchmark._04]: 4,
-  [Benchmark._05]: 4,
-  [Benchmark._06]: 2,
-  [Benchmark._09]: 4,
+  // [Benchmark._03]: 4,
+  // [Benchmark._04]: 4,
+  // [Benchmark._05]: 4,
+  // [Benchmark._06]: 2,
+  // [Benchmark._09]: 4,
 };
 
 export function slowDownNote(throttleCPU: number | undefined): string {
